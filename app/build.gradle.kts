@@ -4,13 +4,13 @@ plugins {
 }
 
 android {
-    namespace = "com.mocarski.internetshop"
-    compileSdk = 34
+    namespace = "com.andruszkiewicz.internetshop"
+    compileSdk = 35
 
     defaultConfig {
-        applicationId = "com.mocarski.internetshop"
+        applicationId = "com.andruszkiewicz.internetshop"
         minSdk = 24
-        targetSdk = 34
+        targetSdk = 35
         versionCode = 1
         versionName = "1.0"
 
@@ -32,6 +32,10 @@ android {
     }
     kotlinOptions {
         jvmTarget = "11"
+    }
+
+    buildFeatures {
+        viewBinding = true
     }
 }
 

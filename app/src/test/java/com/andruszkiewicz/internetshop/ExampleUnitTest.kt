@@ -1,4 +1,4 @@
-package com.mocarski.internetshop
+package com.andruszkiewicz.internetshop
 
 import org.junit.Test
 
