@@ -5,7 +5,8 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MainActivity">
+    tools:context=".presentation.MainActivity"
+    android:fitsSystemWindows="true">
 
     <RelativeLayout
         android:id="@+id/toolbarRl"
@@ -14,17 +15,17 @@
 
         <TextView
             android:id="@+id/toolbarTitleRl"
+            style="@style/TextAppearance.AppCompat.Body1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Home"
             android:layout_centerInParent="true"
-            style="@style/TextAppearance.AppCompat.Body1"/>
+            android:text="Home" />
 
         <View
             android:layout_width="match_parent"
             android:layout_height="1dp"
-            android:background="@color/gray"
-            android:layout_alignParentBottom="true"/>
+            android:layout_alignParentBottom="true"
+            android:background="@color/gray" />
 
     </RelativeLayout>
 

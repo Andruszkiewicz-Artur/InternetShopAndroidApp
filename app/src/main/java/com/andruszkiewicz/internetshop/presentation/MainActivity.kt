@@ -1,22 +1,29 @@
-package com.andruszkiewicz.internetshop
+package com.andruszkiewicz.internetshop.presentation
 
 import android.os.Bundle
-import android.util.Log
 import androidx.activity.enableEdgeToEdge
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
-import com.andruszkiewicz.internetshop.databinding.ActivityMainBinding
+import com.andruszkiewicz.internetshop.presentation.account.AccountFragment
+import com.andruszkiewicz.internetshop.presentation.history.HistoryFragment
+import com.andruszkiewicz.internetshop.presentation.home.HomeFragment
+import com.andruszkiewicz.internetshop.presentation.order.OrderFragment
 import com.andruszkiewicz.internetshop.R
+import com.andruszkiewicz.internetshop.databinding.ActivityMainBinding
+import com.andruszkiewicz.internetshop.presentation.home.HomeViewModel
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding
+    private val homeViewModel: HomeViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
+        enableEdgeToEdge()
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
-
         showHomeFragment()
 
         binding.bottomNv.setOnItemSelectedListener { item ->
