@@ -7,8 +7,7 @@ data class ProductDto(
     val name: String,
     val prize: Float
 ) {
-    fun toDomain() =
-        ProductModel(
+    fun toDomain() = ProductModel(
             id = id,
             name = name,
             prize = prize

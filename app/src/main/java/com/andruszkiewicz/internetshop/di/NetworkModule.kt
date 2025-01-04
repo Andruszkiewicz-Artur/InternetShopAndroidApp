@@ -2,7 +2,7 @@ package com.andruszkiewicz.internetshop.di
 
 import com.andruszkiewicz.internetshop.network.ApiService
 import com.andruszkiewicz.internetshop.network.service.ProductService
-import com.andruszkiewicz.internetshop.utils.BuildConfig
+import com.andruszkiewicz.internetshop.utils.Utils
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
 import dagger.Module
@@ -36,7 +36,7 @@ object NetworkModule {
     @Singleton
     fun provideRetrofit(okHttpClient: OkHttpClient, gson: Gson) =
         Retrofit.Builder()
-            .baseUrl(BuildConfig.BASE_URL)
+            .baseUrl(Utils.BASE_URL)
             .addConverterFactory(GsonConverterFactory.create(gson))
             .client(okHttpClient)
             .build()
