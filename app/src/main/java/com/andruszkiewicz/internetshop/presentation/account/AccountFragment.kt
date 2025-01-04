@@ -12,10 +12,8 @@ import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import com.andruszkiewicz.internetshop.databinding.FragmentAccountBinding
 import com.andruszkiewicz.internetshop.domain.model.UserModel
-import com.andruszkiewicz.internetshop.utils.Global
-import com.andruszkiewicz.internetshop.utils.Utils
+import com.andruszkiewicz.internetshop.utils.GlobalUser
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
@@ -52,7 +50,7 @@ class AccountFragment : Fragment() {
         binding.userLv.setOnItemClickListener { parent, view, position, id ->
             val user = usersList[position]
 
-            Global.currentUser = user
+            GlobalUser.updateUser(user)
 
             binding.emailTv.text = user.email
         }
@@ -62,7 +60,7 @@ class AccountFragment : Fragment() {
         adapter = ArrayAdapter(requireContext(), android.R.layout.simple_list_item_1, emailUsersList)
         binding.userLv.adapter = adapter
 
-        val email = Global.currentUser?.email
+        val email = GlobalUser.user.value?.email
         if (email != null) {
             binding.emailTv.text = email
         }

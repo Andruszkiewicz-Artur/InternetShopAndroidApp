@@ -2,11 +2,15 @@ package com.andruszkiewicz.internetshop.network.repository
 
 import android.util.Log
 import com.andruszkiewicz.internetshop.domain.model.ProductModel
+import com.andruszkiewicz.internetshop.domain.model.QuantityModel
 import com.andruszkiewicz.internetshop.domain.model.UserModel
 import com.andruszkiewicz.internetshop.domain.repository.ProductRepository
+import com.andruszkiewicz.internetshop.network.dto.OrderProductRequest
+import com.andruszkiewicz.internetshop.network.dto.QuantityDto
 import com.andruszkiewicz.internetshop.network.service.ProductService
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
+import retrofit2.Response
 import javax.inject.Inject
 
 class ProductRepositoryImpl @Inject constructor(
@@ -52,6 +56,25 @@ class ProductRepositoryImpl @Inject constructor(
                 Log.e(TAG, "Failed to fetch users: ${response.errorBody()}")
             }
         }
+    }
+
+    override suspend fun postOrderProduct(
+        email: String,
+        productId: Long,
+        quantity: Int
+    ): QuantityModel? {
+        val response = service.postProduct(
+            OrderProductRequest(
+                email = email,
+                productId = productId,
+                quantity = quantity
+            )
+        )
+        val body = response.body()?.toDomain()
+
+        Log.d(TAG, body.toString())
+
+        return body
     }
 
 }

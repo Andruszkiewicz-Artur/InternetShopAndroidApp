@@ -4,4 +4,6 @@
     <dimen name="m_toolbar_height">55dp</dimen>
     <dimen name="m_button_height">60dp</dimen>
 
+    <dimen name="m_icon_button_image_size">50dp</dimen>
+
 </resources>

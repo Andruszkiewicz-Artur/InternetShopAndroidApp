@@ -4,7 +4,11 @@ import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.andruszkiewicz.internetshop.domain.model.ProductModel
+import com.andruszkiewicz.internetshop.domain.model.UserModel
 import com.andruszkiewicz.internetshop.domain.repository.ProductRepository
+import com.andruszkiewicz.internetshop.utils.GlobalUser
+import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.collectLatest
@@ -12,13 +16,12 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
+@HiltViewModel
 class HomeViewModel @Inject constructor(
     private val productRepository: ProductRepository
 ): ViewModel() {
 
-    companion object {
-        private val TAG = "HomeViewModel_TAG"
-    }
+    private val TAG = HomeViewModel::class.java.simpleName
 
     private val _products = MutableStateFlow<List<ProductModel>>(emptyList())
     val products = _products.asStateFlow()
@@ -26,18 +29,36 @@ class HomeViewModel @Inject constructor(
     init {
         Log.d(TAG, "Start working vm")
 
-        viewModelScope.launch {
+        viewModelScope.launch(Dispatchers.IO) {
             productRepository.getProducts().collectLatest { products ->
                 _products.update { products }
-                Log.d(
-                    TAG,
-                    products.toString()
-                )
             }
         }
     }
 
-    fun showLog() {
-        Log.d(TAG, "Show Log")
+    fun addProductToOrder(product: ProductModel, user: UserModel) {
+        viewModelScope.launch {
+            val product = productRepository.postOrderProduct(user.email, product.id, 1)
+
+            Log.d(TAG, product.toString())
+
+            if (product != null) {
+                val newListOfProducts = user.order?.products?.toMutableList()
+
+                newListOfProducts?.add(product)
+
+                Log.d(TAG, "addProductToOrder: newListOfProducts: ${newListOfProducts}")
+
+                val newUser = user.copy(
+                    order = user.order?.copy(
+                        products = newListOfProducts?.toList() ?: emptyList()
+                    )
+                )
+
+                Log.d(TAG, "addProductToOrder: newUser: ${newUser}")
+
+                GlobalUser.updateUser(newUser)
+            }
+        }
     }
 }
