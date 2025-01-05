@@ -77,4 +77,9 @@ class ProductRepositoryImpl @Inject constructor(
         return body
     }
 
+    override suspend fun deleteProductFormOrder(idOrderProduct: Long): Boolean =
+        service
+            .deleteProduct(idOrderProduct)
+            .isSuccessful
+
 }

@@ -5,10 +5,17 @@
     android:layout_height="match_parent"
     tools:context=".presentation.order.OrderFragment">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
+    <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="Order" />
+        android:layout_height="match_parent">
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recycleView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            tools:listitem="@layout/list_of_products_in_cart" />
+
+    </androidx.core.widget.NestedScrollView>
+
 
 </FrameLayout>

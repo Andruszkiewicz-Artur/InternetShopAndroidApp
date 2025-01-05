@@ -21,4 +21,5 @@ interface ProductRepository {
             quantity: Int
         ): QuantityModel?
 
+    suspend fun deleteProductFormOrder(idOrderProduct: Long): Boolean
 }
