@@ -4,6 +4,7 @@ import com.andruszkiewicz.internetshop.network.dto.OrderProductRequest
 import com.andruszkiewicz.internetshop.network.dto.ProductDto
 import com.andruszkiewicz.internetshop.network.dto.QuantityDto
 import com.andruszkiewicz.internetshop.network.dto.UserDto
+import com.andruszkiewicz.internetshop.network.dto.UserRequest
 import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.DELETE
@@ -25,4 +26,6 @@ interface ProductService {
     @DELETE("order/product")
     suspend fun deleteProduct(@Query("id") productId: Long): Response<Unit>
 
+    @POST("user")
+    suspend fun postUser(@Body user: UserRequest): Response<Unit>
 }

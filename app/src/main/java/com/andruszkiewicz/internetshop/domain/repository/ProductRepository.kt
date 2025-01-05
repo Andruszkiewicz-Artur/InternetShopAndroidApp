@@ -11,9 +11,9 @@ interface ProductRepository {
 
     suspend fun createProduct(product: ProductModel)
 
-    suspend fun getProducts(): Flow<List<ProductModel>>
+    suspend fun getProducts(): List<ProductModel>
 
-    suspend fun getUsers(): Flow<List<UserModel>>
+    suspend fun getUsers(): List<UserModel>
 
     suspend fun postOrderProduct(
             email: String,
@@ -22,4 +22,10 @@ interface ProductRepository {
         ): QuantityModel?
 
     suspend fun deleteProductFormOrder(idOrderProduct: Long): Boolean
+
+    suspend fun createUser(
+        email: String,
+        password: String,
+        isAdmin: Boolean
+    ): Boolean
 }

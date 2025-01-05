@@ -7,6 +7,7 @@ import com.andruszkiewicz.internetshop.domain.model.UserModel
 import com.andruszkiewicz.internetshop.domain.repository.ProductRepository
 import com.andruszkiewicz.internetshop.network.dto.OrderProductRequest
 import com.andruszkiewicz.internetshop.network.dto.QuantityDto
+import com.andruszkiewicz.internetshop.network.dto.UserRequest
 import com.andruszkiewicz.internetshop.network.service.ProductService
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
@@ -21,41 +22,30 @@ class ProductRepositoryImpl @Inject constructor(
 
     override suspend fun createProduct(product: ProductModel) {  }
 
-    override suspend fun getProducts(): Flow<List<ProductModel>> {
+    override suspend fun getProducts(): List<ProductModel> {
         val response = service.getProducts()
 
         Log.d(TAG, response.toString())
         Log.d(TAG, response.body().toString())
 
-        return flow {
-            if (response.isSuccessful) {
-                response.body()?.let {
-                    emit(it.map { productDto -> productDto.toDomain() })
-                } ?: emit(emptyList())
-            } else {
-                // Log or handle unsuccessful responses
-                emit(emptyList())  // Emit empty list if response is not successful
-                Log.e(TAG, "Failed to fetch products: ${response.errorBody()}")
-            }
+        val body = response.body()?.map {
+            it.toDomain()
         }
+
+        return body ?: emptyList()
     }
 
-    override suspend fun getUsers(): Flow<List<UserModel>> {
+    override suspend fun getUsers(): List<UserModel> {
         val response = service.getUsers()
 
         Log.d(TAG, response.toString())
         Log.d(TAG, response.body().toString())
 
-        return flow {
-            if(response.isSuccessful) {
-                response.body()?.let {
-                    emit(it.map { userDto -> userDto.toDomain() })
-                } ?: emit(emptyList())
-            } else {
-                emit(emptyList())
-                Log.e(TAG, "Failed to fetch users: ${response.errorBody()}")
-            }
+        val body = response.body()?.map {
+            it.toDomain()
         }
+
+        return body ?: emptyList()
     }
 
     override suspend fun postOrderProduct(
@@ -81,5 +71,14 @@ class ProductRepositoryImpl @Inject constructor(
         service
             .deleteProduct(idOrderProduct)
             .isSuccessful
+
+    override suspend fun createUser(email: String, password: String, isAdmin: Boolean): Boolean =
+        service.postUser(
+            UserRequest(
+                email,
+                password,
+                if (isAdmin) "Admin" else "User"
+            )
+        ).isSuccessful
 
 }

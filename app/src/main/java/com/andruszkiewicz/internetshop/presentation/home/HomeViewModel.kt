@@ -30,8 +30,8 @@ class HomeViewModel @Inject constructor(
         Log.d(TAG, "Start working vm")
 
         viewModelScope.launch(Dispatchers.IO) {
-            productRepository.getProducts().collectLatest { products ->
-                _products.update { products }
+            _products.update {
+                productRepository.getProducts()
             }
         }
     }

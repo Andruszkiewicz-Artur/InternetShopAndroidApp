@@ -1,10 +1,12 @@
 package com.andruszkiewicz.internetshop.presentation.account
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
+import androidx.core.view.marginBottom
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
@@ -12,6 +14,8 @@ import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import com.andruszkiewicz.internetshop.databinding.FragmentAccountBinding
 import com.andruszkiewicz.internetshop.domain.model.UserModel
+import com.andruszkiewicz.internetshop.presentation.MainActivity
+import com.andruszkiewicz.internetshop.presentation.addUser.AddUserActivity
 import com.andruszkiewicz.internetshop.utils.GlobalUser
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
@@ -46,6 +50,12 @@ class AccountFragment : Fragment() {
         initListener()
     }
 
+    override fun onResume() {
+        super.onResume()
+
+        vm.getUsers()
+    }
+
     private fun initListener() {
         binding.userLv.setOnItemClickListener { parent, view, position, id ->
             val user = usersList[position]
@@ -53,6 +63,11 @@ class AccountFragment : Fragment() {
             GlobalUser.updateUser(user)
 
             binding.emailTv.text = user.email
+        }
+
+        binding.addUserFab.setOnClickListener {
+            val intent = Intent(requireContext(), AddUserActivity::class.java)
+            startActivity(intent)
         }
     }
 

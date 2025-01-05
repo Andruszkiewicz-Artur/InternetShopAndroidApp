@@ -26,14 +26,14 @@ class AccountViewModel @Inject constructor(
     private val _users = MutableStateFlow(emptyList<UserModel>())
     val users = _users.asStateFlow()
 
-    private val _currentUser = MutableStateFlow<UserModel?>(null)
-    val currentUser = _currentUser.asStateFlow()
-
     init {
+        getUsers()
+    }
+
+    fun getUsers() {
         viewModelScope.launch(Dispatchers.IO) {
-            repository.getUsers().collectLatest { users ->
-                Log.d(TAG, users.toString())
-                _users.update { users }
+            _users.update {
+                repository.getUsers()
             }
         }
     }
