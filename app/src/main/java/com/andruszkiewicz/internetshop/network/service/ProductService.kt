@@ -2,9 +2,11 @@ package com.andruszkiewicz.internetshop.network.service
 
 import com.andruszkiewicz.internetshop.network.dto.OrderProductRequest
 import com.andruszkiewicz.internetshop.network.dto.ProductDto
+import com.andruszkiewicz.internetshop.network.dto.ProductRequest
 import com.andruszkiewicz.internetshop.network.dto.QuantityDto
 import com.andruszkiewicz.internetshop.network.dto.UserDto
 import com.andruszkiewicz.internetshop.network.dto.UserRequest
+import com.andruszkiewicz.internetshop.utils.Utils
 import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.DELETE
@@ -28,4 +30,7 @@ interface ProductService {
 
     @POST("user")
     suspend fun postUser(@Body user: UserRequest): Response<Unit>
+
+    @POST("product")
+    suspend fun createProduct(@Body productRequest: ProductRequest): Response<Utils>
 }

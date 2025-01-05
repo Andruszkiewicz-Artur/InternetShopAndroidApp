@@ -27,8 +27,10 @@ class HomeViewModel @Inject constructor(
     val products = _products.asStateFlow()
 
     init {
-        Log.d(TAG, "Start working vm")
+        getProducts()
+    }
 
+    fun getProducts() {
         viewModelScope.launch(Dispatchers.IO) {
             _products.update {
                 productRepository.getProducts()

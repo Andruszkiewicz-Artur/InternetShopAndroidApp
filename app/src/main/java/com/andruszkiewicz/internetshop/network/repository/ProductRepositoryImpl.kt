@@ -6,6 +6,7 @@ import com.andruszkiewicz.internetshop.domain.model.QuantityModel
 import com.andruszkiewicz.internetshop.domain.model.UserModel
 import com.andruszkiewicz.internetshop.domain.repository.ProductRepository
 import com.andruszkiewicz.internetshop.network.dto.OrderProductRequest
+import com.andruszkiewicz.internetshop.network.dto.ProductRequest
 import com.andruszkiewicz.internetshop.network.dto.QuantityDto
 import com.andruszkiewicz.internetshop.network.dto.UserRequest
 import com.andruszkiewicz.internetshop.network.service.ProductService
@@ -81,4 +82,11 @@ class ProductRepositoryImpl @Inject constructor(
             )
         ).isSuccessful
 
+    override suspend fun createProduct(name: String, prize: Float): Boolean =
+        service.createProduct(
+            ProductRequest(
+                name = name,
+                prize = prize
+            )
+        ).isSuccessful
 }

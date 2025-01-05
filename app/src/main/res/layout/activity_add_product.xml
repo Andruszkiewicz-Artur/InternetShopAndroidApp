@@ -5,30 +5,31 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".presentation.addUser.AddUserActivity"
+    tools:context=".presentation.addProduct.AddProductActivity"
     android:fitsSystemWindows="true">
 
     <RelativeLayout
         android:id="@+id/toolbarRl"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/m_toolbar_height">
+        android:layout_height="@dimen/m_toolbar_height"
+        android:layout_alignParentTop="true">
 
         <ImageButton
             android:id="@+id/backBnt"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@drawable/ic_back_white"
-            android:layout_alignParentStart="true"
+            android:background="@drawable/ic_back_white"
+            android:backgroundTint="@android:color/transparent"
+            android:foregroundTint="?attr/colorOnBackground"
             android:layout_centerVertical="true"
-            android:background="@android:color/transparent"
+            android:layout_alignParentStart="true"
             android:padding="8dp"/>
 
         <TextView
-            android:id="@+id/addUserTv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
-            android:text="Add User"
+            android:text="Add product"
             style="@style/TextAppearance.AppCompat.Title"/>
 
         <View
@@ -39,90 +40,61 @@
 
     </RelativeLayout>
 
-
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@+id/toolbarRl"
         android:paddingHorizontal="8dp">
 
+
         <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/mailTil"
+            android:id="@+id/nameTil"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
-            app:boxCornerRadiusTopStart="8dp"
-            app:boxCornerRadiusTopEnd="8dp"
-            app:boxCornerRadiusBottomStart="8dp"
             app:boxCornerRadiusBottomEnd="8dp"
-            android:hint="Email">
+            app:boxCornerRadiusBottomStart="8dp"
+            app:boxCornerRadiusTopEnd="8dp"
+            app:boxCornerRadiusTopStart="8dp"
+            android:hint="Product name"
+            android:layout_marginTop="20dp">
 
             <EditText
-                android:id="@+id/mailEt"
+                android:id="@+id/nameEt"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:inputType="textEmailAddress"
-                android:drawableStart="@drawable/ic_mail_white"/>
+                android:inputType="text"/>
 
         </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/passwordTil"
+            android:id="@+id/prizeTil"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/mailTil"
-            android:layout_marginTop="20dp"
-            app:boxCornerRadiusTopStart="8dp"
-            app:boxCornerRadiusTopEnd="8dp"
-            app:boxCornerRadiusBottomStart="8dp"
+            android:layout_below="@+id/nameTil"
             app:boxCornerRadiusBottomEnd="8dp"
-            app:passwordToggleEnabled="true"
-            android:hint="Password">
+            app:boxCornerRadiusBottomStart="8dp"
+            app:boxCornerRadiusTopEnd="8dp"
+            app:boxCornerRadiusTopStart="8dp"
+            android:hint="Prize"
+            android:layout_marginTop="20dp">
 
             <EditText
-                android:id="@+id/passwordEt"
+                android:id="@+id/prizeEt"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:inputType="textPassword"
-                android:drawableStart="@drawable/ic_lock_white"/>
+                android:inputType="numberDecimal"/>
 
         </com.google.android.material.textfield.TextInputLayout>
-
-        <RadioGroup
-            android:id="@+id/typeAccountRg"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/passwordTil"
-            android:layout_marginTop="10dp"
-            android:orientation="horizontal">
-
-            <RadioButton
-                android:id="@+id/userRb"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="User"/>
-
-            <RadioButton
-                android:id="@+id/adminRb"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="10dp"
-                android:text="Admin"/>
-
-        </RadioGroup>
 
         <com.google.android.material.button.MaterialButton
-            android:id="@+id/saveUserBnt"
+            android:id="@+id/addBnt"
             android:layout_marginTop="40dp"
             android:layout_width="match_parent"
             android:layout_height="@dimen/m_button_height"
-            android:layout_below="@+id/typeAccountRg"
-            android:text="Create User"
+            android:layout_below="@+id/prizeTil"
+            android:text="Add Product"
             app:cornerRadius="8dp"/>
 
-
     </RelativeLayout>
-
-
 
 </RelativeLayout>

@@ -28,4 +28,9 @@ interface ProductRepository {
         password: String,
         isAdmin: Boolean
     ): Boolean
+
+    suspend fun createProduct(
+        name: String,
+        prize: Float
+    ): Boolean
 }

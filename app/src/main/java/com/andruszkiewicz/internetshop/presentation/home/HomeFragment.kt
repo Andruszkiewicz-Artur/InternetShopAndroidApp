@@ -1,5 +1,6 @@
 package com.andruszkiewicz.internetshop.presentation.home
 
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -11,8 +12,10 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.andruszkiewicz.internetshop.databinding.ActivityAddProductBinding
 import com.andruszkiewicz.internetshop.databinding.FragmentHomeBinding
 import com.andruszkiewicz.internetshop.domain.model.UserModel
+import com.andruszkiewicz.internetshop.presentation.addProduct.AddProductActivity
 import com.andruszkiewicz.internetshop.utils.GlobalUser
 import com.andruszkiewicz.internetshop.utils.Utils
 import dagger.hilt.android.AndroidEntryPoint
@@ -48,6 +51,20 @@ class HomeFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         initView()
+        initListener()
+    }
+
+    override fun onResume() {
+        super.onResume()
+
+        vm.getProducts()
+    }
+
+    private fun initListener() {
+        binding.addProductBnt.setOnClickListener {
+            val intent = Intent(requireContext(), AddProductActivity::class.java)
+            startActivity(intent)
+        }
     }
 
     private fun initView() {

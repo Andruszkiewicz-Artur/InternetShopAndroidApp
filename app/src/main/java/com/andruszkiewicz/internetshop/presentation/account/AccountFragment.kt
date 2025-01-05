@@ -2,6 +2,7 @@ package com.andruszkiewicz.internetshop.presentation.account
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -18,8 +19,10 @@ import com.andruszkiewicz.internetshop.presentation.MainActivity
 import com.andruszkiewicz.internetshop.presentation.addUser.AddUserActivity
 import com.andruszkiewicz.internetshop.utils.GlobalUser
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 @AndroidEntryPoint
 class AccountFragment : Fragment() {
@@ -84,9 +87,12 @@ class AccountFragment : Fragment() {
     }
 
     private fun setUpVMObserver() {
-        viewLifecycleOwner.lifecycleScope.launch {
-            viewLifecycleOwner.lifecycle.repeatOnLifecycle(Lifecycle.State.STARTED) {
-                vm.users.collectLatest { users ->
+        vm.getUsers()
+
+        lifecycleScope.launch(Dispatchers.IO) {
+            vm.users.collectLatest { users ->
+                Log.d(TAG, users.toString())
+                withContext(Dispatchers.Main) {
                     usersList.clear()
                     usersList.addAll(users)
 
