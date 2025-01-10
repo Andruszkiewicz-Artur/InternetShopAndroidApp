@@ -1,5 +1,6 @@
 package com.andruszkiewicz.internetshop.domain.repository
 
+import com.andruszkiewicz.internetshop.domain.enums.UserStatus
 import com.andruszkiewicz.internetshop.domain.model.ProductModel
 import com.andruszkiewicz.internetshop.domain.model.QuantityModel
 import com.andruszkiewicz.internetshop.domain.model.UserModel
@@ -26,11 +27,16 @@ interface ProductRepository {
     suspend fun createUser(
         email: String,
         password: String,
-        isAdmin: Boolean
-    ): Boolean
+        status: UserStatus
+    ): UserModel?
 
     suspend fun createProduct(
         name: String,
         prize: Float
     ): Boolean
+
+    suspend fun logInUser(
+        email: String,
+        password: String
+    ): UserModel?
 }

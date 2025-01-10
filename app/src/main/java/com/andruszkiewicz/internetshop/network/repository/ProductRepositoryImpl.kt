@@ -1,18 +1,15 @@
 package com.andruszkiewicz.internetshop.network.repository
 
 import android.util.Log
+import com.andruszkiewicz.internetshop.domain.enums.UserStatus
 import com.andruszkiewicz.internetshop.domain.model.ProductModel
 import com.andruszkiewicz.internetshop.domain.model.QuantityModel
 import com.andruszkiewicz.internetshop.domain.model.UserModel
 import com.andruszkiewicz.internetshop.domain.repository.ProductRepository
 import com.andruszkiewicz.internetshop.network.dto.OrderProductRequest
 import com.andruszkiewicz.internetshop.network.dto.ProductRequest
-import com.andruszkiewicz.internetshop.network.dto.QuantityDto
 import com.andruszkiewicz.internetshop.network.dto.UserRequest
 import com.andruszkiewicz.internetshop.network.service.ProductService
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.flow
-import retrofit2.Response
 import javax.inject.Inject
 
 class ProductRepositoryImpl @Inject constructor(
@@ -73,14 +70,19 @@ class ProductRepositoryImpl @Inject constructor(
             .deleteProduct(idOrderProduct)
             .isSuccessful
 
-    override suspend fun createUser(email: String, password: String, isAdmin: Boolean): Boolean =
-        service.postUser(
-            UserRequest(
-                email,
-                password,
-                if (isAdmin) "Admin" else "User"
-            )
-        ).isSuccessful
+    override suspend fun createUser(email: String, password: String, status: UserStatus): UserModel? =
+        try {
+            service.postUser(
+                UserRequest(
+                    email,
+                    password,
+                    status.name
+                )
+            ).body()?.toDomain()
+        } catch (e: Exception) {
+            Log.e(TAG, "createUser: error: $e")
+            null
+        }
 
     override suspend fun createProduct(name: String, prize: Float): Boolean =
         service.createProduct(
@@ -89,4 +91,14 @@ class ProductRepositoryImpl @Inject constructor(
                 prize = prize
             )
         ).isSuccessful
+
+    override suspend fun logInUser(email: String, password: String): UserModel? =
+        try {
+            service.logIn(email, password)
+                .body()
+                ?.toDomain()
+        } catch (e: Exception) {
+            Log.e(TAG, "logInUser: error: $e")
+            null
+        }
 }

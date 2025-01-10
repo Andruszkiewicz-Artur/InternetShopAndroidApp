@@ -29,8 +29,14 @@ interface ProductService {
     suspend fun deleteProduct(@Query("id") productId: Long): Response<Unit>
 
     @POST("user")
-    suspend fun postUser(@Body user: UserRequest): Response<Unit>
+    suspend fun postUser(@Body user: UserRequest): Response<UserDto?>
 
     @POST("product")
     suspend fun createProduct(@Body productRequest: ProductRequest): Response<Utils>
+
+    @GET("user/login")
+    suspend fun logIn(
+        @Query("email") email: String,
+        @Query("password") password: String
+    ): Response<UserDto?>
 }
