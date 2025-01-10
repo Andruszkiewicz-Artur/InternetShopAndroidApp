@@ -2,41 +2,35 @@ package com.andruszkiewicz.internetshop.presentation.account
 
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
-import androidx.core.view.marginBottom
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.viewModels
-import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.lifecycleScope
-import androidx.lifecycle.repeatOnLifecycle
+import androidx.navigation.fragment.findNavController
+import com.andruszkiewicz.internetshop.R
 import com.andruszkiewicz.internetshop.databinding.FragmentAccountBinding
+import com.andruszkiewicz.internetshop.domain.enums.UserStatus
 import com.andruszkiewicz.internetshop.domain.model.UserModel
-import com.andruszkiewicz.internetshop.presentation.MainActivity
-import com.andruszkiewicz.internetshop.presentation.addUser.AddUserActivity
+import com.andruszkiewicz.internetshop.domain.repository.ProductRepository
+import com.andruszkiewicz.internetshop.presentation.changePassword.ChangePasswordActivity
+import com.andruszkiewicz.internetshop.presentation.login.LoginActivity
+import com.andruszkiewicz.internetshop.presentation.orderHistory.OrderHistoryActivity
+import com.andruszkiewicz.internetshop.presentation.productController.ProductControllerActivity
+import com.andruszkiewicz.internetshop.presentation.userController.UserControllerActivity
 import com.andruszkiewicz.internetshop.utils.GlobalUser
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.collectLatest
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
-
+import javax.inject.Inject
 @AndroidEntryPoint
 class AccountFragment : Fragment() {
 
     private val TAG = AccountFragment::class.java.simpleName
-    private val vm: AccountViewModel by viewModels()
+
+    @Inject
+    lateinit var networkRepository: ProductRepository
 
     private var _binding: FragmentAccountBinding? = null
     private val binding get() = _binding!!
-
-    private lateinit var adapter: ArrayAdapter<String>
-
-    private var usersList = mutableListOf<UserModel>()
-    private var emailUsersList = mutableListOf<String>()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -53,55 +47,43 @@ class AccountFragment : Fragment() {
         initListener()
     }
 
-    override fun onResume() {
-        super.onResume()
-
-        vm.getUsers()
-    }
-
     private fun initListener() {
-        binding.userLv.setOnItemClickListener { parent, view, position, id ->
-            val user = usersList[position]
-
-            GlobalUser.updateUser(user)
-
-            binding.emailTv.text = user.email
+        binding.productControllerBnt.setOnClickListener {
+            val intent = Intent(requireContext(), ProductControllerActivity::class.java)
+            startActivity(intent)
         }
 
-        binding.addUserFab.setOnClickListener {
-            val intent = Intent(requireContext(), AddUserActivity::class.java)
+        binding.userControllerBnt.setOnClickListener {
+            val intent = Intent(requireContext(), UserControllerActivity::class.java)
+            startActivity(intent)
+        }
+
+        binding.ordersHistoryBnt.setOnClickListener {
+            val intent = Intent(requireContext(), OrderHistoryActivity::class.java)
+            startActivity(intent)
+        }
+
+        binding.changePasswordBnt.setOnClickListener {
+            val intent = Intent(requireContext(), ChangePasswordActivity::class.java)
+            startActivity(intent)
+        }
+
+        binding.logOutBnt.setOnClickListener {
+            GlobalUser.updateUser(null)
+            val intent = Intent(requireContext(), LoginActivity::class.java)
             startActivity(intent)
         }
     }
 
     private fun initView() {
-        adapter = ArrayAdapter(requireContext(), android.R.layout.simple_list_item_1, emailUsersList)
-        binding.userLv.adapter = adapter
+        val currentUser = GlobalUser.user.value!!
 
-        val email = GlobalUser.user.value?.email
-        if (email != null) {
-            binding.emailTv.text = email
+        if (currentUser.status != UserStatus.Admin) {
+            binding.productControllerBnt.visibility = View.GONE
+            binding.userControllerBnt.visibility = View.GONE
         }
 
-        setUpVMObserver()
-    }
-
-    private fun setUpVMObserver() {
-        vm.getUsers()
-
-        lifecycleScope.launch(Dispatchers.IO) {
-            vm.users.collectLatest { users ->
-                Log.d(TAG, users.toString())
-                withContext(Dispatchers.Main) {
-                    usersList.clear()
-                    usersList.addAll(users)
-
-                    emailUsersList.clear()
-                    emailUsersList.addAll(users.map { it.email })
-
-                    adapter.notifyDataSetChanged()
-                }
-            }
-        }
+        binding.emailTv.text = currentUser.email
     }
 }
+

@@ -9,6 +9,7 @@ import androidx.core.view.WindowInsetsCompat
 import androidx.lifecycle.lifecycleScope
 import com.andruszkiewicz.internetshop.R
 import com.andruszkiewicz.internetshop.databinding.ActivityAddUserBinding
+import com.andruszkiewicz.internetshop.domain.enums.UserStatus
 import com.andruszkiewicz.internetshop.domain.model.UserModel
 import com.andruszkiewicz.internetshop.domain.repository.ProductRepository
 import com.andruszkiewicz.internetshop.utils.Utils
@@ -93,11 +94,11 @@ class AddUserActivity : AppCompatActivity() {
             val response = repository.createUser(
                 email = email,
                 password = password,
-                isAdmin = isAdmin
+                status = if (isAdmin) UserStatus.Admin else UserStatus.User
             )
 
             withContext(Dispatchers.Main) {
-                if (response) {
+                if (response != null) {
                     onBackPressed()
                     Utils.toast(
                         message = "User added!",

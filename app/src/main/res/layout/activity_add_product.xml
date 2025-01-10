@@ -18,7 +18,7 @@
             android:id="@+id/backBnt"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:background="@drawable/ic_back_white"
+            android:background="@drawable/ic_back_gray"
             android:backgroundTint="@android:color/transparent"
             android:foregroundTint="?attr/colorOnBackground"
             android:layout_centerVertical="true"
@@ -26,6 +26,7 @@
             android:padding="8dp"/>
 
         <TextView
+            android:id="@+id/titleTv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"

@@ -13,7 +13,7 @@ object GlobalUser {
     private val _user = MutableStateFlow<UserModel?>(null)
     val user = _user.asStateFlow()
 
-    fun updateUser(user: UserModel) {
+    fun updateUser(user: UserModel?) {
         Log.d(TAG, user.toString())
         _user.update { user }
     }
