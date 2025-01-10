@@ -6,7 +6,7 @@ import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.ViewHolder
 import com.andruszkiewicz.internetshop.databinding.ListOfProductsInCartBinding
 import com.andruszkiewicz.internetshop.domain.model.QuantityModel
-import com.andruszkiewicz.internetshop.utils.mapper.toPrize
+import com.andruszkiewicz.internetshop.domain.mapper.toPrize
 
 class OrderRecycleView(
     private var products: List<QuantityModel>,

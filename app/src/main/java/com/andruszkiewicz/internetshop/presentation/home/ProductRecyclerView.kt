@@ -10,7 +10,7 @@ import com.andruszkiewicz.internetshop.R
 import com.andruszkiewicz.internetshop.databinding.ProductViewBinding
 import com.andruszkiewicz.internetshop.domain.model.ProductModel
 import com.andruszkiewicz.internetshop.domain.model.UserModel
-import com.andruszkiewicz.internetshop.utils.mapper.toPrize
+import com.andruszkiewicz.internetshop.domain.mapper.toPrize
 
 class ProductRecyclerView(
     private var items: List<ProductModel>,
