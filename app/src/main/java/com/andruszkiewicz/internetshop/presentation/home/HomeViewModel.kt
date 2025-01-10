@@ -45,9 +45,14 @@ class HomeViewModel @Inject constructor(
             Log.d(TAG, product.toString())
 
             if (product != null) {
-                val newListOfProducts = user.order?.products?.toMutableList()
+                val oldOrderList = user.order
 
-                newListOfProducts?.add(product)
+                val newListOfProducts =
+                    if (oldOrderList != null) oldOrderList.products.toMutableList()
+                    else mutableListOf()
+
+
+                newListOfProducts.add(product)
 
                 Log.d(TAG, "addProductToOrder: newListOfProducts: ${newListOfProducts}")
 

@@ -16,6 +16,7 @@ import com.andruszkiewicz.internetshop.databinding.ActivityAddProductBinding
 import com.andruszkiewicz.internetshop.databinding.FragmentHomeBinding
 import com.andruszkiewicz.internetshop.domain.model.UserModel
 import com.andruszkiewicz.internetshop.presentation.addProduct.AddProductActivity
+import com.andruszkiewicz.internetshop.presentation.login.LoginActivity
 import com.andruszkiewicz.internetshop.utils.GlobalUser
 import com.andruszkiewicz.internetshop.utils.Utils
 import dagger.hilt.android.AndroidEntryPoint
@@ -51,20 +52,12 @@ class HomeFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         initView()
-        initListener()
     }
 
     override fun onResume() {
         super.onResume()
 
         vm.getProducts()
-    }
-
-    private fun initListener() {
-        binding.addProductBnt.setOnClickListener {
-            val intent = Intent(requireContext(), AddProductActivity::class.java)
-            startActivity(intent)
-        }
     }
 
     private fun initView() {
@@ -83,10 +76,8 @@ class HomeFragment : Fragment() {
                         message = "This product is already in cart!"
                     )
                 } else if (currentUser == null) {
-                    Utils.toast(
-                        context = requireContext(),
-                        message = "You need choose user!"
-                    )
+                    val intent = Intent(requireContext(), LoginActivity::class.java)
+                    startActivity(intent)
                 } else {
                     vm.addProductToOrder(product, currentUser)
                 }
