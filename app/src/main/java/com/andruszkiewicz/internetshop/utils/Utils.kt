@@ -9,4 +9,6 @@ object Utils {
 
     fun toast(message: String, context: Context) =
         Toast.makeText(context, message, Toast.LENGTH_LONG).show()
+
+    val PRODUCT_ID_EXTRA = "PRODUCT_ID_EXTRA"
 }

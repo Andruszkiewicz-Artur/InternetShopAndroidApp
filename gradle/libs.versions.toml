@@ -16,6 +16,8 @@ daggerHiltVersion = "2.54"
 ksp = "2.0.20-Beta1-1.0.22"
 lifecycleVersion = "2.5.1"
 fragmentKtxVersion = "1.8.5"
+navigationFragmentKtx = "2.8.5"
+navigationUiKtx = "2.8.5"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -35,10 +37,11 @@ okhttp-logging-interceptor = { module = "com.squareup.okhttp3:logging-intercepto
 
 hilt = { module = "com.google.dagger:hilt-android", version.ref = "daggerHiltVersion" }
 hilt-compiler = { module = "com.google.dagger:hilt-compiler", version.ref = "daggerHiltVersion" }
-hilt-lifecycle-viewmodel = { module = "androidx.hilt:hilt-lifecycle-viewmodel", version.ref = "daggerHiltVersion" }
 androidx-fragment = { module = "androidx.fragment:fragment-ktx", version.ref = "fragmentKtxVersion"}
 
 lifecycle-viewModel = { module = "androidx.lifecycle:lifecycle-viewmodel-ktx", version.ref = "lifecycleVersion" }
+androidx-navigation-fragment-ktx = { group = "androidx.navigation", name = "navigation-fragment-ktx", version.ref = "navigationFragmentKtx" }
+androidx-navigation-ui-ktx = { group = "androidx.navigation", name = "navigation-ui-ktx", version.ref = "navigationUiKtx" }
 
 
 [plugins]

@@ -9,10 +9,6 @@
         android:title="Order"
         android:icon="@drawable/ic_order_white"/>
 
-    <item android:id="@+id/menu_history_orders"
-        android:title="History Orders"
-        android:icon="@drawable/ic_history_white"/>
-
     <item android:id="@+id/menu_account"
         android:title="Account"
         android:icon="@drawable/ic_account_white"/>
