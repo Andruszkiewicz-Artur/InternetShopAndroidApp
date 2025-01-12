@@ -1,16 +1,13 @@
 package com.andruszkiewicz.internetshop.presentation.register
 
 import android.content.Intent
+import android.os.Build
 import android.os.Bundle
-import android.util.Log
+import android.view.autofill.AutofillManager
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
 import androidx.lifecycle.lifecycleScope
-import com.andruszkiewicz.internetshop.R
 import com.andruszkiewicz.internetshop.data.datastore.PreferencesDataStoreHelper
-import com.andruszkiewicz.internetshop.data.datastore.PreferencesKey
 import com.andruszkiewicz.internetshop.databinding.ActivityRegisterBinding
 import com.andruszkiewicz.internetshop.domain.enums.UserStatus
 import com.andruszkiewicz.internetshop.domain.repository.ProductRepository
@@ -41,9 +38,8 @@ class RegisterActivity : AppCompatActivity() {
     private var rePassword: String = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-
         enableEdgeToEdge()
+        super.onCreate(savedInstanceState)
 
         _binding = ActivityRegisterBinding.inflate(layoutInflater)
         setContentView(binding.root)
@@ -105,6 +101,7 @@ class RegisterActivity : AppCompatActivity() {
                             applicationContext
                         )
                     }
+                    setCredentials()
 
                     GlobalUser.updateUser(user)
                     finishAffinity()
@@ -123,6 +120,19 @@ class RegisterActivity : AppCompatActivity() {
                     binding.mailEt.error = "Use another email!"
                     binding.mailEt.requestFocus()
                 }
+            }
+        }
+    }
+
+    private fun setCredentials() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            val autofillManager =  getSystemService(AutofillManager::class.java)
+
+            if (autofillManager != null && autofillManager.isEnabled) {
+                binding.mailEt.setAutofillHints("emailAddress")
+                binding.passwordEt.setAutofillHints("password")
+
+                autofillManager.commit()
             }
         }
     }

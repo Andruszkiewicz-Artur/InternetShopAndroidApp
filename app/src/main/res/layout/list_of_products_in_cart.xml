@@ -36,9 +36,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentStart="true"
-            android:src="@drawable/ic_remove_white"
-            android:background="?selectableItemBackgroundBorderless"
-            app:tint="@color/material_on_background_emphasis_high_type"/>
+            android:src="@drawable/ic_remove"
+            android:background="?selectableItemBackgroundBorderless"/>
 
         <TextView
             android:id="@+id/countTv"
@@ -55,9 +54,8 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="10dp"
             android:layout_toEndOf="@+id/countTv"
-            android:src="@drawable/ic_add_white"
-            android:background="?selectableItemBackgroundBorderless"
-            app:tint="@color/material_on_background_emphasis_high_type"/>
+            android:src="@drawable/ic_add"
+            android:background="?selectableItemBackgroundBorderless"/>
 
     </RelativeLayout>
 

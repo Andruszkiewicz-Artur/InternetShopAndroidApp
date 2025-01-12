@@ -11,11 +11,12 @@
         android:id="@+id/backBnt"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:padding="16dp"
+        android:layout_margin="16dp"
         android:src="@drawable/ic_back_gray"
         android:background="@android:color/transparent"
         android:layout_alignParentStart="true"
-        android:layout_alignParentTop="true"/>
+        android:layout_alignParentTop="true"
+        android:fitsSystemWindows="true"/>
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -42,19 +43,19 @@
             android:layout_marginTop="20dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            style="@style/ThemeOverlay.Material3.AutoCompleteTextView.OutlinedBox"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
             app:boxCornerRadiusBottomEnd="8dp"
             app:boxCornerRadiusBottomStart="8dp"
             app:boxCornerRadiusTopEnd="8dp"
             app:boxCornerRadiusTopStart="8dp"
+            app:startIconDrawable="@drawable/ic_mail_white"
             android:hint="Email">
 
             <EditText
                 android:id="@+id/mailEt"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:inputType="textEmailAddress"
-                android:drawableStart="@drawable/ic_mail_white"/>
+                android:inputType="textEmailAddress"/>
 
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -62,20 +63,20 @@
             android:id="@+id/passwordTil"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            style="@style/ThemeOverlay.Material3.AutoCompleteTextView.OutlinedBox"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
             app:boxCornerRadiusBottomEnd="8dp"
             app:boxCornerRadiusBottomStart="8dp"
             app:boxCornerRadiusTopEnd="8dp"
             app:boxCornerRadiusTopStart="8dp"
             app:passwordToggleEnabled="true"
+            app:startIconDrawable="@drawable/ic_lock_white"
             android:hint="Password">
 
             <EditText
                 android:id="@+id/passwordEt"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:inputType="textPassword"
-                android:drawableStart="@drawable/ic_lock_white"/>
+                android:inputType="textPassword"/>
 
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -83,20 +84,20 @@
             android:id="@+id/rePasswordTil"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            style="@style/ThemeOverlay.Material3.AutoCompleteTextView.OutlinedBox"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
             app:boxCornerRadiusBottomEnd="8dp"
             app:boxCornerRadiusBottomStart="8dp"
             app:boxCornerRadiusTopEnd="8dp"
             app:boxCornerRadiusTopStart="8dp"
             app:passwordToggleEnabled="true"
+            app:startIconDrawable="@drawable/ic_lock_white"
             android:hint="Re-Password">
 
             <EditText
                 android:id="@+id/rePasswordEt"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:inputType="textPassword"
-                android:drawableStart="@drawable/ic_lock_white"/>
+                android:inputType="textPassword"/>
 
         </com.google.android.material.textfield.TextInputLayout>
 

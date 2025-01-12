@@ -38,12 +38,12 @@ class ProductRecyclerView(
             if (item == items.last()) productDivider.visibility = View.GONE
 
             if (orderProducts?.find { it.product.id == item.id } != null) {
-                buyIb.setImageResource(R.drawable.ic_check_mark_white)
+                buyIb.setImageResource(R.drawable.ic_check_mark)
                 buyIb.setOnClickListener {
                     onClickAddItem(null)
                 }
             } else {
-                buyIb.setImageResource(R.drawable.ic_add_schopping_cart_white)
+                buyIb.setImageResource(R.drawable.ic_add_schopping_cart)
                 buyIb.setOnClickListener {
                     onClickAddItem(item)
                 }

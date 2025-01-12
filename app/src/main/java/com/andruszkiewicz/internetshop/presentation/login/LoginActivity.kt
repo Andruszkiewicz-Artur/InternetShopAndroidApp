@@ -1,8 +1,11 @@
 package com.andruszkiewicz.internetshop.presentation.login
 
 import android.content.Intent
+import android.os.Build
 import android.os.Bundle
+import android.service.autofill.AutofillService
 import android.util.Log
+import android.view.autofill.AutofillManager
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
@@ -40,14 +43,29 @@ class LoginActivity : AppCompatActivity() {
     private var password: String = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-
         enableEdgeToEdge()
+        super.onCreate(savedInstanceState)
 
         _binding = ActivityLoginBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
         initListener()
+        initAutofilling()
+    }
+
+    private fun initAutofilling() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            val autofillManager =  getSystemService(AutofillManager::class.java)
+
+            if (autofillManager.isAutofillSupported) {
+                binding.mailEt.setAutofillHints("emailAddress")
+                binding.passwordEt.setAutofillHints("password")
+            }
+
+            if (autofillManager.isEnabled && autofillManager != null) {
+                autofillManager.commit()
+            }
+        }
     }
 
     private fun initListener() {

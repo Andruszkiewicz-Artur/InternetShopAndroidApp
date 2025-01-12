@@ -28,10 +28,9 @@
         android:layout_height="@dimen/m_icon_button_image_size"
         android:layout_centerVertical="true"
         android:layout_alignParentEnd="true"
-        android:src="@drawable/ic_add_schopping_cart_white"
+        android:src="@drawable/ic_add_schopping_cart"
         android:contentDescription="Add product"
-        android:background="?selectableItemBackgroundBorderless"
-        app:tint="@color/material_on_background_emphasis_high_type" />
+        android:background="?selectableItemBackgroundBorderless"/>
 
 
     <View

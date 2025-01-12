@@ -6,6 +6,7 @@ import android.util.Log
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.ViewCompat
 import androidx.lifecycle.lifecycleScope
 import com.andruszkiewicz.internetshop.presentation.account.AccountFragment
 import com.andruszkiewicz.internetshop.presentation.home.HomeFragment
@@ -41,8 +42,8 @@ class MainActivity : AppCompatActivity() {
     private val homeViewModel: HomeViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
         enableEdgeToEdge()
+        super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
         showHomeFragment()
