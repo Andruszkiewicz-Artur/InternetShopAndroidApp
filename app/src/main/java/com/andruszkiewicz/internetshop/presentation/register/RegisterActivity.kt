@@ -2,12 +2,15 @@ package com.andruszkiewicz.internetshop.presentation.register
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.lifecycle.lifecycleScope
 import com.andruszkiewicz.internetshop.R
+import com.andruszkiewicz.internetshop.data.datastore.PreferencesDataStoreHelper
+import com.andruszkiewicz.internetshop.data.datastore.PreferencesKey
 import com.andruszkiewicz.internetshop.databinding.ActivityRegisterBinding
 import com.andruszkiewicz.internetshop.domain.enums.UserStatus
 import com.andruszkiewicz.internetshop.domain.repository.ProductRepository
@@ -19,6 +22,8 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
+
+typealias UserDataStore = PreferencesDataStoreHelper.User
 
 @AndroidEntryPoint
 class RegisterActivity : AppCompatActivity() {
@@ -93,6 +98,14 @@ class RegisterActivity : AppCompatActivity() {
 
             withContext(Dispatchers.Main) {
                 if (user != null) {
+                    lifecycleScope.launch(Dispatchers.IO) {
+                        UserDataStore.saveEmailAndPassword(
+                            user.email,
+                            password,
+                            applicationContext
+                        )
+                    }
+
                     GlobalUser.updateUser(user)
                     finishAffinity()
                     val intent = Intent(this@RegisterActivity, MainActivity::class.java)

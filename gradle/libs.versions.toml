@@ -18,6 +18,7 @@ lifecycleVersion = "2.5.1"
 fragmentKtxVersion = "1.8.5"
 navigationFragmentKtx = "2.8.5"
 navigationUiKtx = "2.8.5"
+datastorePreferencesVersion = "1.1.1"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -42,6 +43,8 @@ androidx-fragment = { module = "androidx.fragment:fragment-ktx", version.ref = "
 lifecycle-viewModel = { module = "androidx.lifecycle:lifecycle-viewmodel-ktx", version.ref = "lifecycleVersion" }
 androidx-navigation-fragment-ktx = { group = "androidx.navigation", name = "navigation-fragment-ktx", version.ref = "navigationFragmentKtx" }
 androidx-navigation-ui-ktx = { group = "androidx.navigation", name = "navigation-ui-ktx", version.ref = "navigationUiKtx" }
+
+datastore-preferences = { module = "androidx.datastore:datastore-preferences", version.ref = "datastorePreferencesVersion" }
 
 
 [plugins]

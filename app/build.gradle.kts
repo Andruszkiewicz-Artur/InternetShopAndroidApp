@@ -69,4 +69,7 @@ dependencies {
 
     //Lifecycle
     implementation(libs.lifecycle.viewModel)
+
+    //Datastore preferences
+    implementation(libs.datastore.preferences)
 }

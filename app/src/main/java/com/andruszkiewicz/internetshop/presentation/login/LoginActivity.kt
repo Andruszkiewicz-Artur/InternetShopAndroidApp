@@ -9,6 +9,8 @@ import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.lifecycle.lifecycleScope
 import com.andruszkiewicz.internetshop.R
+import com.andruszkiewicz.internetshop.data.datastore.PreferencesDataStoreHelper
+import com.andruszkiewicz.internetshop.data.datastore.PreferencesKey
 import com.andruszkiewicz.internetshop.databinding.ActivityLoginBinding
 import com.andruszkiewicz.internetshop.domain.repository.ProductRepository
 import com.andruszkiewicz.internetshop.presentation.MainActivity
@@ -20,6 +22,8 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
+
+typealias UserDataStore = PreferencesDataStoreHelper.User
 
 @AndroidEntryPoint
 class LoginActivity : AppCompatActivity() {
@@ -87,6 +91,12 @@ class LoginActivity : AppCompatActivity() {
 
             if (user != null) {
                 GlobalUser.updateUser(user)
+
+                UserDataStore.saveEmailAndPassword(
+                    user.email,
+                    password,
+                    applicationContext
+                )
 
                 withContext(Dispatchers.Main) {
                     finishAffinity()

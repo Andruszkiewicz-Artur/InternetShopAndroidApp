@@ -7,8 +7,11 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.andruszkiewicz.internetshop.R
+import com.andruszkiewicz.internetshop.data.datastore.PreferencesDataStoreHelper
+import com.andruszkiewicz.internetshop.data.datastore.PreferencesKey
 import com.andruszkiewicz.internetshop.databinding.FragmentAccountBinding
 import com.andruszkiewicz.internetshop.domain.enums.UserStatus
 import com.andruszkiewicz.internetshop.domain.model.UserModel
@@ -20,7 +23,10 @@ import com.andruszkiewicz.internetshop.presentation.productController.ProductCon
 import com.andruszkiewicz.internetshop.presentation.userController.UserControllerActivity
 import com.andruszkiewicz.internetshop.utils.GlobalUser
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import javax.inject.Inject
+
 @AndroidEntryPoint
 class AccountFragment : Fragment() {
 
@@ -70,6 +76,17 @@ class AccountFragment : Fragment() {
 
         binding.logOutBnt.setOnClickListener {
             GlobalUser.updateUser(null)
+
+            lifecycleScope.launch(Dispatchers.IO) {
+                PreferencesDataStoreHelper.removeDataFromDataStore(
+                    keys = listOf(
+                        PreferencesKey.EMAIL,
+                        PreferencesKey.PASSWORD
+                    ),
+                    requireContext()
+                )
+            }
+
             val intent = Intent(requireContext(), LoginActivity::class.java)
             startActivity(intent)
         }
