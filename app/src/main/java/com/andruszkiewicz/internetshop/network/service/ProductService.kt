@@ -11,6 +11,7 @@ import retrofit2.http.Body
 import retrofit2.http.DELETE
 import retrofit2.http.GET
 import retrofit2.http.POST
+import retrofit2.http.PUT
 import retrofit2.http.Query
 
 interface ProductService {
@@ -35,6 +36,13 @@ interface ProductService {
 
     @DELETE("product")
     suspend fun removeProduct(@Query("productId") idProduct: Long): Response<ProductDto?>
+
+    @PUT("user/changePassword")
+    suspend fun changePassword(
+        @Query("email") email: String,
+        @Query("oldPassword") oldPassword: String,
+        @Query("newPassword") newPassword: String
+    ): Response<UserDto?>
 
     @GET("user/login")
     suspend fun logIn(

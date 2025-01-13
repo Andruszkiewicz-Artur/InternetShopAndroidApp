@@ -43,4 +43,10 @@ interface ProductRepository {
     suspend fun removeProduct(
         productId: Long
     ): ProductModel?
+
+    suspend fun changePassword(
+        email: String,
+        oldPassword: String,
+        newPassword: String
+    ): UserModel?
 }

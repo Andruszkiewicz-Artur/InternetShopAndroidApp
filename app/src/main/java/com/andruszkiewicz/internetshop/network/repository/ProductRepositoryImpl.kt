@@ -17,7 +17,7 @@ class ProductRepositoryImpl @Inject constructor(
 
     private val TAG = ProductRepositoryImpl::class.java.simpleName
 
-    override suspend fun createProduct(product: ProductModel) {  }
+    override suspend fun createProduct(product: ProductModel) {}
 
     override suspend fun getProducts(): List<ProductModel> {
         val response = service.getProducts()
@@ -69,7 +69,11 @@ class ProductRepositoryImpl @Inject constructor(
             .deleteProduct(idOrderProduct)
             .isSuccessful
 
-    override suspend fun createUser(email: String, password: String, status: UserStatus): UserModel? =
+    override suspend fun createUser(
+        email: String,
+        password: String,
+        status: UserStatus
+    ): UserModel? =
         try {
             service.postUser(
                 UserRequest(
@@ -112,6 +116,23 @@ class ProductRepositoryImpl @Inject constructor(
                 ?.toDomain()
         } catch (e: Exception) {
             Log.e(TAG, "logInUser: error: $e")
+            null
+        }
+
+    override suspend fun changePassword(
+        email: String,
+        oldPassword: String,
+        newPassword: String
+    ): UserModel? =
+        try {
+            Log.d(TAG, "changePassword: email: $email")
+            Log.d(TAG, "changePassword: oldPassword: $oldPassword")
+            Log.d(TAG, "changePassword: newPassword: $newPassword")
+            service.changePassword(email, oldPassword, newPassword)
+                .body()
+                ?.toDomain()
+        } catch (e: Exception) {
+            Log.e(TAG, "changePassword: error: $e")
             null
         }
 }
