@@ -11,18 +11,25 @@ import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.andruszkiewicz.internetshop.databinding.FragmentOrderBinding
 import com.andruszkiewicz.internetshop.databinding.ListOfProductsInCartBinding
+import com.andruszkiewicz.internetshop.domain.mapper.toPrize
+import com.andruszkiewicz.internetshop.domain.repository.ProductRepository
 import com.andruszkiewicz.internetshop.utils.GlobalUser
+import com.andruszkiewicz.internetshop.utils.Utils
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import javax.inject.Inject
 
 @AndroidEntryPoint
 class OrderFragment : Fragment() {
 
     private val TAG = OrderFragment::class.java.simpleName
     private val vm: OrderViewModel by viewModels()
+
+    @Inject
+    lateinit var repository: ProductRepository
 
     private var _binding: FragmentOrderBinding? = null
     private val binding get() = _binding!!
@@ -42,9 +49,39 @@ class OrderFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         initView()
+        initListeners()
+    }
+
+    private fun initListeners() {
+        binding.buyBnt.setOnClickListener {
+            lifecycleScope.launch(Dispatchers.IO) {
+                val user = GlobalUser.user.value
+
+                if (user != null && user.order != null) {
+                    repository.buyOrder(user.order.id).also { isSuccessful ->
+                        if (isSuccessful) {
+                            GlobalUser.updateUser(user.copy(order = null))
+                            withContext(Dispatchers.Main) {
+                                Utils.toast("Buy products!", requireContext())
+                            }
+                        }
+                        else Log.e(TAG, "initListeners: error")
+                    }
+                } else {
+                    withContext(Dispatchers.Main) {
+                        Utils.toast("No products to buy!", requireContext())
+                    }
+                }
+            }
+        }
     }
 
     private fun initView() {
+        initAdapter()
+        setUpUserObserving()
+    }
+
+    private fun initAdapter() {
         linearLayoutManager = LinearLayoutManager(context)
         binding.recycleView.layoutManager = linearLayoutManager
 
@@ -56,19 +93,23 @@ class OrderFragment : Fragment() {
         )
 
         binding.recycleView.adapter = adapter
-
-        setUpUserObserving()
     }
 
+
     private fun setUpUserObserving() {
-        Log.d(TAG, "Start working setUpUserObserving")
         lifecycleScope.launch(Dispatchers.IO) {
-            Log.d(TAG, "Start working lifecycleScope in setUpUserObserving")
             GlobalUser.user.collectLatest { user ->
                 Log.d(TAG, "setUpUserObserver: ${user.toString()}")
                 if (user != null) {
+                    val quantities = user.order?.products ?: emptyList()
+                    val totalPrize = quantities.sumOf { (it.product.prize * it.quantity).toDouble() }
+
                     withContext(Dispatchers.Main) {
-                        adapter.updateList(user.order?.products ?: emptyList())
+                        adapter.updateList(quantities)
+                        binding.totalPriceTv.text = "Total prize: ${totalPrize.toFloat().toPrize()}"
+
+                        if (quantities.isEmpty()) binding.cartEmptyTv.visibility = View.VISIBLE
+                        else binding.cartEmptyTv.visibility = View.GONE
                     }
                 }
             }

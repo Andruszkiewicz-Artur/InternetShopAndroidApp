@@ -49,4 +49,6 @@ interface ProductRepository {
         oldPassword: String,
         newPassword: String
     ): UserModel?
+
+    suspend fun buyOrder(id: Long): Boolean
 }

@@ -135,4 +135,9 @@ class ProductRepositoryImpl @Inject constructor(
             Log.e(TAG, "changePassword: error: $e")
             null
         }
+
+    override suspend fun buyOrder(id: Long): Boolean =
+        service
+            .buyOrder(id)
+            .isSuccessful
 }

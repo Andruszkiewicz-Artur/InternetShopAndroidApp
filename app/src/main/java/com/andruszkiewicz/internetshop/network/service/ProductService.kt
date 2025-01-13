@@ -49,4 +49,9 @@ interface ProductService {
         @Query("email") email: String,
         @Query("password") password: String
     ): Response<UserDto?>
+
+    @POST("order/buy")
+    suspend fun buyOrder(
+        @Query("id") idOrder: Long
+    ): Response<Unit>
 }
