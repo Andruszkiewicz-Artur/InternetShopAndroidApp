@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/productControllerRl"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="4dp">
+
+    <TextView
+        android:id="@+id/productNameTv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Item name"
+        style="@style/TextAppearance.MaterialComponents.Subtitle1"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentStart="true"/>
+
+    <TextView
+        android:id="@+id/prizeTv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="0.00 zł"
+        style="@style/TextAppearance.MaterialComponents.Subtitle2"
+        android:layout_below="@+id/productNameTv"
+        android:layout_marginTop="8dp"
+        android:layout_alignParentStart="true"/>
+
+    <ImageButton
+        android:id="@+id/removeBnt"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@android:color/transparent"
+        android:src="@drawable/ic_delete"
+        android:layout_alignParentEnd="true"
+        android:layout_centerVertical="true"/>
+
+    <View
+        android:id="@+id/divider"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/gray"
+        android:layout_below="@id/prizeTv"
+        android:layout_marginTop="8dp"/>
+
+</RelativeLayout>

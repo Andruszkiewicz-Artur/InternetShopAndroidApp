@@ -4,6 +4,7 @@ import com.andruszkiewicz.internetshop.domain.enums.UserStatus
 import com.andruszkiewicz.internetshop.domain.model.ProductModel
 import com.andruszkiewicz.internetshop.domain.model.QuantityModel
 import com.andruszkiewicz.internetshop.domain.model.UserModel
+import com.andruszkiewicz.internetshop.network.dto.ProductDto
 import com.andruszkiewicz.internetshop.network.dto.QuantityDto
 import kotlinx.coroutines.flow.Flow
 import retrofit2.Response
@@ -30,13 +31,16 @@ interface ProductRepository {
         status: UserStatus
     ): UserModel?
 
-    suspend fun createProduct(
-        name: String,
-        prize: Float
-    ): Boolean
+    suspend fun createEditProduct(
+        product: ProductModel
+    ): ProductModel?
 
     suspend fun logInUser(
         email: String,
         password: String
     ): UserModel?
+
+    suspend fun removeProduct(
+        productId: Long
+    ): ProductModel?
 }

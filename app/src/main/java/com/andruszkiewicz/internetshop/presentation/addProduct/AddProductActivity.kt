@@ -1,9 +1,13 @@
 package com.andruszkiewicz.internetshop.presentation.addProduct
 
+import android.app.Activity
+import android.os.Build
 import android.os.Bundle
+import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
 import com.andruszkiewicz.internetshop.databinding.ActivityAddProductBinding
+import com.andruszkiewicz.internetshop.domain.mapper.toPrize
 import com.andruszkiewicz.internetshop.domain.model.ProductModel
 import com.andruszkiewicz.internetshop.domain.repository.ProductRepository
 import com.andruszkiewicz.internetshop.utils.Utils
@@ -24,10 +28,9 @@ class AddProductActivity : AppCompatActivity() {
     private var _binding: ActivityAddProductBinding? = null
     private val binding get() = _binding!!
 
-    private var productId: Long? = null
-    private var productName = ""
-    private var productPrize: Float? = null
-    private var products: List<ProductModel> = emptyList()
+    private var name = ""
+    private var prize: Float? = null
+    private var product: ProductModel? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -49,34 +52,42 @@ class AddProductActivity : AppCompatActivity() {
     }
 
     private fun validateData() {
-        productName = binding.nameEt.text.toString().trim()
-        productPrize = binding.prizeEt.text.toString().trim().toFloatOrNull()
+        name = binding.nameEt.text.toString().trim()
+        prize = binding.prizeEt.text.toString().trim().toFloatOrNull()
 
-        if (productName.isBlank()) {
+        if (name.isBlank()) {
             binding.nameEt.error = "Enter name of product"
             binding.nameEt.requestFocus()
-        } else if (productPrize == null) {
+        } else if (prize == null) {
             binding.prizeEt.error = "Wrong prize"
             binding.prizeEt.requestFocus()
-        } else if (products.find { it.name == productName } != null) {
-            binding.nameEt.error = "Product like that already exist"
-            binding.nameEt.requestFocus()
         } else {
-            addProduct()
+            addEditProduct()
         }
     }
 
-    private fun addProduct() {
+    private fun addEditProduct() {
         lifecycleScope.launch(Dispatchers.IO) {
-            val result = repository.createProduct(productName, productPrize!!)
+            product = ProductModel(
+                id = product?.id ?: 0,
+                name = name,
+                prize = prize!!
+            )
 
-            if (result) {
+            val result = repository.createEditProduct(product!!)
+
+            if (result != null) {
                 withContext(Dispatchers.Main) {
-                    onBackPressed()
+                    Log.d(TAG, "addEditProduct: result: $result")
+                    val resultIntent = intent
+                    resultIntent.putExtra(Utils.PRODUCT_EXTRA, result)
+                    Log.d(TAG, "addEditProduct: intent: ${resultIntent.extras}")
+                    setResult(Activity.RESULT_OK, resultIntent)
                     Utils.toast(
                         message = "Add new product!",
                         context = applicationContext
                     )
+                    finish()
                 }
             } else {
                 Utils.toast(
@@ -88,23 +99,24 @@ class AddProductActivity : AppCompatActivity() {
     }
 
     private fun initView() {
-        val idProduct = intent.getLongExtra(Utils.PRODUCT_ID_EXTRA, -1)
-        if (idProduct >= 0) productId = idProduct
-
-        getProducts()
-    }
-
-    private fun getProducts() {
-        lifecycleScope.launch(Dispatchers.IO) {
-            products = repository.getProducts()
-
-            if (productId != null) setUpView()
+        product = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            intent.getParcelableExtra(Utils.PRODUCT_EXTRA, ProductModel::class.java)
+        } else {
+            intent.getParcelableExtra(Utils.PRODUCT_EXTRA)
         }
+
+        if (product != null) setUpEditView()
     }
 
-    private fun setUpView() {
-        binding.titleTv.text = "Edit Product"
-        binding.nameEt.isEnabled = false
-        binding.addBnt.text = "Edit Product"
+    private fun setUpEditView() {
+        with(binding) {
+            titleTv.text = "Edit Product"
+            addBnt.text = "Edit Product"
+
+            nameEt.setText(product!!.name)
+            nameEt.isEnabled = false
+
+            prizeEt.setText(product!!.prize.toPrize().dropLast(3))
+        }
     }
 }

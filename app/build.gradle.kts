@@ -3,6 +3,7 @@ plugins {
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kspCompose)
     alias(libs.plugins.daggerHilt)
+    alias(libs.plugins.parcelize)
 }
 
 android {

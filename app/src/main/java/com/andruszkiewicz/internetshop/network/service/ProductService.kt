@@ -2,7 +2,6 @@ package com.andruszkiewicz.internetshop.network.service
 
 import com.andruszkiewicz.internetshop.network.dto.OrderProductRequest
 import com.andruszkiewicz.internetshop.network.dto.ProductDto
-import com.andruszkiewicz.internetshop.network.dto.ProductRequest
 import com.andruszkiewicz.internetshop.network.dto.QuantityDto
 import com.andruszkiewicz.internetshop.network.dto.UserDto
 import com.andruszkiewicz.internetshop.network.dto.UserRequest
@@ -32,7 +31,10 @@ interface ProductService {
     suspend fun postUser(@Body user: UserRequest): Response<UserDto?>
 
     @POST("product")
-    suspend fun createProduct(@Body productRequest: ProductRequest): Response<Utils>
+    suspend fun createEditProduct(@Body product: ProductDto): Response<ProductDto>
+
+    @DELETE("product")
+    suspend fun removeProduct(@Query("productId") idProduct: Long): Response<ProductDto?>
 
     @GET("user/login")
     suspend fun logIn(

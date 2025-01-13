@@ -4,4 +4,5 @@ plugins {
     alias(libs.plugins.kotlin.android) apply false
     alias(libs.plugins.daggerHilt) apply false
     alias(libs.plugins.kspCompose) apply false
+    alias(libs.plugins.parcelize) apply false
 }

@@ -7,7 +7,6 @@ import com.andruszkiewicz.internetshop.domain.model.QuantityModel
 import com.andruszkiewicz.internetshop.domain.model.UserModel
 import com.andruszkiewicz.internetshop.domain.repository.ProductRepository
 import com.andruszkiewicz.internetshop.network.dto.OrderProductRequest
-import com.andruszkiewicz.internetshop.network.dto.ProductRequest
 import com.andruszkiewicz.internetshop.network.dto.UserRequest
 import com.andruszkiewicz.internetshop.network.service.ProductService
 import javax.inject.Inject
@@ -84,13 +83,27 @@ class ProductRepositoryImpl @Inject constructor(
             null
         }
 
-    override suspend fun createProduct(name: String, prize: Float): Boolean =
-        service.createProduct(
-            ProductRequest(
-                name = name,
-                prize = prize
-            )
-        ).isSuccessful
+    override suspend fun createEditProduct(product: ProductModel): ProductModel? =
+        try {
+            service.createEditProduct(
+                product.toDto()
+            ).body()?.toDomain()
+        } catch (e: Exception) {
+            Log.e(TAG, "createEditProduct: error: $e")
+            null
+        }
+
+    override suspend fun removeProduct(productId: Long): ProductModel? =
+        try {
+            service
+                .removeProduct(productId)
+                .body()
+                ?.toDomain()
+        } catch (e: Exception) {
+            Log.e(TAG, "removeProduct: error: $e")
+            null
+        }
+
 
     override suspend fun logInUser(email: String, password: String): UserModel? =
         try {

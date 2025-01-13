@@ -113,24 +113,24 @@ class LoginActivity : AppCompatActivity() {
                 UserDataStore.saveEmailAndPassword(
                     user.email,
                     password,
-                    applicationContext
+                    this@LoginActivity
                 )
 
                 withContext(Dispatchers.Main) {
                     finishAffinity()
-                    val intent = Intent(applicationContext, MainActivity::class.java)
+                    val intent = Intent(this@LoginActivity, MainActivity::class.java)
                     startActivity(intent)
 
                     Utils.toast(
                         message = "Log in!",
-                        context = applicationContext
+                        context = this@LoginActivity
                     )
                 }
             } else {
                 withContext(Dispatchers.Main) {
                     Utils.toast(
                         message = "Problem with log in!",
-                        context = applicationContext
+                        context = this@LoginActivity
                     )
 
                     binding.mailEt.error = "Data are incorrect!"

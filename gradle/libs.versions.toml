@@ -19,6 +19,7 @@ fragmentKtxVersion = "1.8.5"
 navigationFragmentKtx = "2.8.5"
 navigationUiKtx = "2.8.5"
 datastorePreferencesVersion = "1.1.1"
+parcelizeVersion = "2.0.20-Beta1"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -51,5 +52,6 @@ datastore-preferences = { module = "androidx.datastore:datastore-preferences", v
 android-application = { id = "com.android.application", version.ref = "agp" }
 kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
 kspCompose = { id = "com.google.devtools.ksp", version.ref = "ksp" }
+parcelize = { id = "org.jetbrains.kotlin.plugin.parcelize", version.ref = "parcelizeVersion" }
 daggerHilt = { id = "com.google.dagger.hilt.android", version.ref = "daggerHiltVersion" }
 
