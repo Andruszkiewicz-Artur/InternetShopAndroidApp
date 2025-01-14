@@ -1,6 +1,7 @@
 package com.andruszkiewicz.internetshop.network.dto
 
 import com.andruszkiewicz.internetshop.domain.enums.UserStatus
+import com.andruszkiewicz.internetshop.domain.model.UserEmailAndStatusModel
 import com.andruszkiewicz.internetshop.domain.model.UserModel
 
 data class UserDto(
@@ -15,5 +16,9 @@ data class UserDto(
         status = UserStatus.valueOf(status)
     )
 
+    fun toUserEmailAndStatus() = UserEmailAndStatusModel(
+        email = email,
+        status = UserStatus.valueOf(status)
+    )
 }
 

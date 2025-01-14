@@ -42,7 +42,7 @@ class AddUserActivity : AppCompatActivity() {
         _binding = ActivityAddUserBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        getUsers()
+//        getUsers()
         initView()
         initListener()
     }
@@ -83,11 +83,11 @@ class AddUserActivity : AppCompatActivity() {
         }
     }
 
-    private fun getUsers() {
-        lifecycleScope.launch(Dispatchers.IO) {
-            users = repository.getUsers()
-        }
-    }
+//    private fun getUsers() {
+//        lifecycleScope.launch(Dispatchers.IO) {
+//            users = repository.getUsers()
+//        }
+//    }
 
     private fun saveUser() {
         lifecycleScope.launch(Dispatchers.IO) {

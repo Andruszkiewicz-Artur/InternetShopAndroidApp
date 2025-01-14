@@ -5,6 +5,7 @@ import com.andruszkiewicz.internetshop.domain.enums.UserStatus
 import com.andruszkiewicz.internetshop.domain.model.OrderModel
 import com.andruszkiewicz.internetshop.domain.model.ProductModel
 import com.andruszkiewicz.internetshop.domain.model.QuantityModel
+import com.andruszkiewicz.internetshop.domain.model.UserEmailAndStatusModel
 import com.andruszkiewicz.internetshop.domain.model.UserModel
 import com.andruszkiewicz.internetshop.domain.repository.ProductRepository
 import com.andruszkiewicz.internetshop.network.dto.OrderDto
@@ -34,14 +35,11 @@ class ProductRepositoryImpl @Inject constructor(
         return body ?: emptyList()
     }
 
-    override suspend fun getUsers(): List<UserModel> {
+    override suspend fun getUsers(): List<UserEmailAndStatusModel> {
         val response = service.getUsers()
 
-        Log.d(TAG, response.toString())
-        Log.d(TAG, response.body().toString())
-
         val body = response.body()?.map {
-            it.toDomain()
+            it.toUserEmailAndStatus()
         }
 
         return body ?: emptyList()
