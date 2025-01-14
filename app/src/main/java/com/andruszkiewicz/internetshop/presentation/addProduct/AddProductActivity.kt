@@ -78,10 +78,8 @@ class AddProductActivity : AppCompatActivity() {
 
             if (result != null) {
                 withContext(Dispatchers.Main) {
-                    Log.d(TAG, "addEditProduct: result: $result")
                     val resultIntent = intent
                     resultIntent.putExtra(Utils.PRODUCT_EXTRA, result)
-                    Log.d(TAG, "addEditProduct: intent: ${resultIntent.extras}")
                     setResult(Activity.RESULT_OK, resultIntent)
                     Utils.toast(
                         message = "Add new product!",

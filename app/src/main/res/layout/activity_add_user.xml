@@ -55,14 +55,16 @@
             app:boxCornerRadiusTopEnd="8dp"
             app:boxCornerRadiusBottomStart="8dp"
             app:boxCornerRadiusBottomEnd="8dp"
-            android:hint="Email">
+            android:hint="Email"
+            app:startIconDrawable="@drawable/ic_mail_white">
 
             <EditText
                 android:id="@+id/mailEt"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:inputType="textEmailAddress"
-                android:drawableStart="@drawable/ic_mail_white"/>
+                android:autofillHints="none"
+                android:importantForAccessibility="no"/>
 
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -77,14 +79,16 @@
             app:boxCornerRadiusBottomStart="8dp"
             app:boxCornerRadiusBottomEnd="8dp"
             app:passwordToggleEnabled="true"
-            android:hint="Password">
+            android:hint="Password"
+            app:startIconDrawable="@drawable/ic_lock_white">
 
             <EditText
                 android:id="@+id/passwordEt"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:inputType="textPassword"
-                android:drawableStart="@drawable/ic_lock_white"/>
+                android:autofillHints="none"
+                android:importantForAccessibility="no"/>
 
         </com.google.android.material.textfield.TextInputLayout>
 

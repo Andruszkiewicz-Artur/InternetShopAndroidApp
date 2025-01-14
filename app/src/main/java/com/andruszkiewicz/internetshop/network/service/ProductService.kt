@@ -32,6 +32,9 @@ interface ProductService {
     @POST("user")
     suspend fun postUser(@Body user: UserRequest): Response<UserDto?>
 
+    @PUT("user")
+    suspend fun updateUser(@Body user: UserRequest): Response<UserDto?>
+
     @POST("product")
     suspend fun createEditProduct(@Body product: ProductDto): Response<ProductDto>
 

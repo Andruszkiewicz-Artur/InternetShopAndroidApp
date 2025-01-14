@@ -1,6 +1,9 @@
 package com.andruszkiewicz.internetshop.presentation.addUser
 
+import android.app.Activity
+import android.os.Build
 import android.os.Bundle
+import android.util.Log
 import android.util.Patterns
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
@@ -10,6 +13,7 @@ import androidx.lifecycle.lifecycleScope
 import com.andruszkiewicz.internetshop.R
 import com.andruszkiewicz.internetshop.databinding.ActivityAddUserBinding
 import com.andruszkiewicz.internetshop.domain.enums.UserStatus
+import com.andruszkiewicz.internetshop.domain.model.UserEmailAndStatusModel
 import com.andruszkiewicz.internetshop.domain.model.UserModel
 import com.andruszkiewicz.internetshop.domain.repository.ProductRepository
 import com.andruszkiewicz.internetshop.utils.Utils
@@ -34,7 +38,7 @@ class AddUserActivity : AppCompatActivity() {
     private var email = ""
     private var password = ""
     private var isAdmin = false
-    private var users: List<UserModel> = emptyList()
+    private var user: UserEmailAndStatusModel? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -42,13 +46,13 @@ class AddUserActivity : AppCompatActivity() {
         _binding = ActivityAddUserBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-//        getUsers()
         initView()
         initListener()
     }
 
     private fun initView() {
         binding.userRb.isChecked = true
+        takeData()
     }
 
     private fun initListener() {
@@ -72,39 +76,71 @@ class AddUserActivity : AppCompatActivity() {
         } else if (!Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
             binding.mailEt.error = "Valid email"
             binding.mailEt.requestFocus()
-        }else if (password.isBlank()) {
+        }else if (password.isBlank() && user == null) {
             binding.passwordEt.error = "Enter password"
             binding.passwordEt.requestFocus()
-        } else if (users.find { it.email == email } != null) {
-            binding.mailEt.error = "That email already exist"
-            binding.mailEt.requestFocus()
         } else {
             saveUser()
         }
     }
 
-//    private fun getUsers() {
-//        lifecycleScope.launch(Dispatchers.IO) {
-//            users = repository.getUsers()
-//        }
-//    }
-
     private fun saveUser() {
         lifecycleScope.launch(Dispatchers.IO) {
-            val response = repository.createUser(
-                email = email,
-                password = password,
-                status = if (isAdmin) UserStatus.Admin else UserStatus.User
-            )
-
+            val response = if (user != null) {
+                repository.updateUser(
+                    email = user!!.email,
+                    password = password,
+                    status = if (isAdmin) UserStatus.Admin else UserStatus.User
+                )
+            } else {
+                repository.createUser(
+                    email = email,
+                    password = password,
+                    status = if (isAdmin) UserStatus.Admin else UserStatus.User
+                )
+            }
             withContext(Dispatchers.Main) {
                 if (response != null) {
-                    onBackPressed()
                     Utils.toast(
-                        message = "User added!",
+                        message = if (user != null) "User edit!" else "User added!",
                         context = applicationContext
                     )
+                    val resultIntent = intent
+                    val userWithEmailAndStatus = response.toUserEmailAndStatus()
+                    resultIntent.putExtra(Utils.USER_EXTRA, userWithEmailAndStatus)
+                    setResult(Activity.RESULT_OK, resultIntent)
+                    finish()
+                } else if (user == null) {
+                    binding.mailEt.error = "User with that email already exist!"
+                    binding.mailEt.requestFocus()
+                } else {
+                    Utils.toast(
+                        message = "Problem with adding user!",
+                        context = applicationContext
+                    )
+                    return@withContext
                 }
+            }
+        }
+    }
+
+    private fun takeData() {
+        user = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            intent.getParcelableExtra(Utils.USER_EXTRA, UserEmailAndStatusModel::class.java)
+        } else intent.getParcelableExtra(Utils.USER_EXTRA)
+
+        setUpView()
+    }
+
+    private fun setUpView() {
+        with(binding) {
+            if (user != null) {
+                addUserTv.text = "Edit User"
+                saveUserBnt.text = "Edit User"
+                mailEt.isEnabled = false
+                mailEt.setText(user!!.email)
+                if (user!!.status == UserStatus.Admin) adminRb.isChecked = true
+                else userRb.isChecked = true
             }
         }
     }

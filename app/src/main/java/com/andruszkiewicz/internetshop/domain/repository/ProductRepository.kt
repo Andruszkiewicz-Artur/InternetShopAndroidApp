@@ -34,6 +34,12 @@ interface ProductRepository {
         status: UserStatus
     ): UserModel?
 
+    suspend fun updateUser(
+        email: String,
+        password: String,
+        status: UserStatus
+    ): UserModel?
+
     suspend fun createEditProduct(
         product: ProductModel
     ): ProductModel?

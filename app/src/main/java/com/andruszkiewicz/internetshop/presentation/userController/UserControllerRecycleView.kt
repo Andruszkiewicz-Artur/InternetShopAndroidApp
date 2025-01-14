@@ -7,7 +7,6 @@ import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.ViewHolder
 import com.andruszkiewicz.internetshop.databinding.UserControllerViewBinding
 import com.andruszkiewicz.internetshop.domain.model.UserEmailAndStatusModel
-import com.andruszkiewicz.internetshop.domain.model.UserModel
 
 class UserControllerRecycleView(
     private var listOfUsers: MutableList<UserEmailAndStatusModel> = mutableListOf(),

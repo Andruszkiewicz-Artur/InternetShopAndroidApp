@@ -4,6 +4,7 @@ import android.app.Activity
 import android.content.Intent
 import android.os.Build
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.result.ActivityResult
@@ -21,9 +22,11 @@ import com.andruszkiewicz.internetshop.domain.model.UserEmailAndStatusModel
 import com.andruszkiewicz.internetshop.domain.model.UserModel
 import com.andruszkiewicz.internetshop.domain.repository.ProductRepository
 import com.andruszkiewicz.internetshop.presentation.addUser.AddUserActivity
+import com.andruszkiewicz.internetshop.utils.GlobalUser
 import com.andruszkiewicz.internetshop.utils.Utils
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
@@ -45,7 +48,9 @@ class UserControllerActivity : AppCompatActivity() {
     private val activityResultLauncher = registerForActivityResult(
         ActivityResultContracts.StartActivityForResult()
     ) { result ->
+        Log.d(TAG, "activityResultLauncher: result: $result")
         takeProductFromResult(result)?.let { user ->
+            Log.d(TAG, "activityResultLauncher: user: $user")
             lifecycleScope.launch(Dispatchers.Default) {
                 updateList(user)
                 withContext(Dispatchers.Main) {
@@ -69,6 +74,7 @@ class UserControllerActivity : AppCompatActivity() {
         } else null
 
     private fun updateList(user: UserEmailAndStatusModel) {
+        Log.d(TAG, "updateList: listOfUsers: before: $listOfUsers")
         val existingProductIndex = listOfUsers.indexOfFirst { it.email == user.email }
 
         if (existingProductIndex != -1) {
@@ -77,6 +83,7 @@ class UserControllerActivity : AppCompatActivity() {
         else {
             listOfUsers.add(user)
         }
+        Log.d(TAG, "updateList: listOfUsers: after: $listOfUsers")
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -93,12 +100,18 @@ class UserControllerActivity : AppCompatActivity() {
 
     private fun takeDataFromApi() {
         lifecycleScope.launch(Dispatchers.IO) {
-            val users = repository.getUsers()
-            listOfUsers = users.toMutableList()
+            GlobalUser.user.first()?.let { user ->
+                val users = repository
+                    .getUsers()
+                    .toMutableList()
 
-            withContext(Dispatchers.Main) {
-                adapter.updateList(listOfUsers)
-                updateNonUserTv()
+                users.removeIf { it.email == user.email }
+                listOfUsers = users
+
+                withContext(Dispatchers.Main) {
+                    adapter.updateList(listOfUsers)
+                    updateNonUserTv()
+                }
             }
         }
     }

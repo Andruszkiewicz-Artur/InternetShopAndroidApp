@@ -87,6 +87,24 @@ class ProductRepositoryImpl @Inject constructor(
             null
         }
 
+    override suspend fun updateUser(
+        email: String,
+        password: String,
+        status: UserStatus
+    ): UserModel? =
+        try {
+            service.updateUser(
+                UserRequest(
+                    email,
+                    password,
+                    status.name
+                )
+            ).body()?.toDomain()
+        } catch (e: Exception) {
+            Log.e(TAG, "updateUser: error: $e")
+            null
+        }
+
     override suspend fun createEditProduct(product: ProductModel): ProductModel? =
         try {
             service.createEditProduct(
