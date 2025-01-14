@@ -2,10 +2,12 @@ package com.andruszkiewicz.internetshop.network.repository
 
 import android.util.Log
 import com.andruszkiewicz.internetshop.domain.enums.UserStatus
+import com.andruszkiewicz.internetshop.domain.model.OrderModel
 import com.andruszkiewicz.internetshop.domain.model.ProductModel
 import com.andruszkiewicz.internetshop.domain.model.QuantityModel
 import com.andruszkiewicz.internetshop.domain.model.UserModel
 import com.andruszkiewicz.internetshop.domain.repository.ProductRepository
+import com.andruszkiewicz.internetshop.network.dto.OrderDto
 import com.andruszkiewicz.internetshop.network.dto.OrderProductRequest
 import com.andruszkiewicz.internetshop.network.dto.UserRequest
 import com.andruszkiewicz.internetshop.network.service.ProductService
@@ -140,4 +142,17 @@ class ProductRepositoryImpl @Inject constructor(
         service
             .buyOrder(id)
             .isSuccessful
+
+    override suspend fun getOrders(email: String): List<OrderModel> =
+        try {
+            service
+                .getOrders(email)
+                .body()
+                ?.map {
+                    it.toDomain()
+                } ?: emptyList()
+        } catch (e: Exception) {
+            Log.e(TAG, "getOrders: error: $e")
+            emptyList()
+        }
 }

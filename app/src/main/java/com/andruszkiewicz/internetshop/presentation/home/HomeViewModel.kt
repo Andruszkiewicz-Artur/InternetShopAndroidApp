@@ -38,33 +38,40 @@ class HomeViewModel @Inject constructor(
         }
     }
 
-    fun addProductToOrder(product: ProductModel, user: UserModel) {
+    fun addProductToOrder(product: ProductModel, user: UserModel, password: String) {
         viewModelScope.launch {
             val product = productRepository.postOrderProduct(user.email, product.id, 1)
 
-            Log.d(TAG, product.toString())
+            if (user.order?.id == null) {
+                productRepository
+                    .logInUser(user.email, password)
+                    ?.let { innerUser ->
+                        GlobalUser.updateUser(innerUser)
+                    }
+            } else {
+                product?.let {
+                    val oldOrderList = user.order
 
-            if (product != null) {
-                val oldOrderList = user.order
-
-                val newListOfProducts =
-                    if (oldOrderList != null) oldOrderList.products.toMutableList()
-                    else mutableListOf()
+                    val newListOfProducts =
+                        if (oldOrderList != null) oldOrderList.products.toMutableList()
+                        else mutableListOf()
 
 
-                newListOfProducts.add(product)
+                    newListOfProducts.add(product)
 
-                Log.d(TAG, "addProductToOrder: newListOfProducts: ${newListOfProducts}")
+                    Log.d(TAG, "addProductToOrder: newListOfProducts: ${newListOfProducts}")
 
-                val newUser = user.copy(
-                    order = user.order?.copy(
-                        products = newListOfProducts?.toList() ?: emptyList()
+                    val newUser = user.copy(
+                        order = user.order?.copy(
+                            products = newListOfProducts.toList()
+                        )
                     )
-                )
 
-                Log.d(TAG, "addProductToOrder: newUser: ${newUser}")
+                    Log.d(TAG, "addProductToOrder: newUser: ${newUser}")
 
-                GlobalUser.updateUser(newUser)
+                    GlobalUser.updateUser(newUser)
+                    return@launch
+                }
             }
         }
     }

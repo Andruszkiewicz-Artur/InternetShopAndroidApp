@@ -12,6 +12,7 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.andruszkiewicz.internetshop.data.datastore.PreferencesDataStoreHelper
 import com.andruszkiewicz.internetshop.databinding.ActivityAddProductBinding
 import com.andruszkiewicz.internetshop.databinding.FragmentHomeBinding
 import com.andruszkiewicz.internetshop.domain.model.UserModel
@@ -39,6 +40,8 @@ class HomeFragment : Fragment() {
     private lateinit var linearLayoutManager: LinearLayoutManager
     private lateinit var adapter: ProductRecyclerView
 
+    private var password = ""
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -52,12 +55,11 @@ class HomeFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         initView()
-    }
 
-    override fun onResume() {
-        super.onResume()
-
-        vm.getProducts()
+        lifecycleScope.launch(Dispatchers.IO) {
+            val (_, innerPassword) = PreferencesDataStoreHelper.User.getEmailAndPassword(requireContext())
+            password = innerPassword ?: ""
+        }
     }
 
     private fun initView() {
@@ -79,7 +81,7 @@ class HomeFragment : Fragment() {
                     val intent = Intent(requireContext(), LoginActivity::class.java)
                     startActivity(intent)
                 } else {
-                    vm.addProductToOrder(product, currentUser)
+                    vm.addProductToOrder(product, currentUser, password)
                 }
             }
         )
@@ -91,11 +93,8 @@ class HomeFragment : Fragment() {
     }
 
     private fun setUpUserObserving() {
-        Log.d(TAG, "Start working setUpUserObserving")
         lifecycleScope.launch(Dispatchers.IO) {
-            Log.d(TAG, "Start working lifecycleScope in setUpUserObserving")
             GlobalUser.user.collectLatest { user ->
-                Log.d(TAG, "setUpUserObserver: ${user.toString()}")
                 if (user != null) {
                     withContext(Dispatchers.Main) {
                         adapter.updateUser(user)

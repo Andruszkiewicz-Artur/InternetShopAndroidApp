@@ -1,6 +1,49 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_marginHorizontal="8dp"
+    app:cardCornerRadius="12dp"
+    app:cardElevation="4dp"
+    app:cardUseCompatPadding="true">
 
-</RelativeLayout>
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="8dp">
+
+        <TextView
+            android:id="@+id/idOrderTv"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Id order: #1"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            android:textColor="@android:color/black"
+            android:layout_alignParentStart="true"/>
+
+        <TextView
+            android:id="@+id/orderProductsTv"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Product: name - 2 pieces"
+            android:textSize="16sp"
+            android:layout_below="@id/idOrderTv"
+            android:layout_alignParentStart="true"
+            android:textColor="@android:color/darker_gray"/>
+
+        <TextView
+            android:id="@+id/prizeTv"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Price: 0.00 zł"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            android:layout_below="@id/orderProductsTv"
+            android:layout_alignParentStart="true"
+            android:textColor="@android:color/holo_green_dark"/>
+
+    </RelativeLayout>
+
+</androidx.cardview.widget.CardView>

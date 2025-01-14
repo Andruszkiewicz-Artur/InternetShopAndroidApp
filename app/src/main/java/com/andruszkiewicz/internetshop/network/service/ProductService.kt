@@ -1,5 +1,6 @@
 package com.andruszkiewicz.internetshop.network.service
 
+import com.andruszkiewicz.internetshop.network.dto.OrderDto
 import com.andruszkiewicz.internetshop.network.dto.OrderProductRequest
 import com.andruszkiewicz.internetshop.network.dto.ProductDto
 import com.andruszkiewicz.internetshop.network.dto.QuantityDto
@@ -54,4 +55,9 @@ interface ProductService {
     suspend fun buyOrder(
         @Query("id") idOrder: Long
     ): Response<Unit>
+
+    @GET("order")
+    suspend fun getOrders(
+        @Query("email") email: String
+    ): Response<List<OrderDto>>
 }
